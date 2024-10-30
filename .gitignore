@@ -17,3 +17,6 @@ Backup of *.doc*
 
 # Visio autosave temporary files
 *.~vsd*
+
+# excel worksheet and workbook files
+*.doccls
