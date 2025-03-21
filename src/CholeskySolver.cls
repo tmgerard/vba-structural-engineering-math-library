@@ -58,7 +58,7 @@ Public Function LowDecomposition(ByRef mat As Matrix) As Matrix
     Set decomp = New Matrix
     Set decomp = decomp.SetSize(size, size)
     
-    Dim I As Long
+    Dim i As Long
     Dim j As Long
     Dim k As Long
     Dim sqSum As Double
@@ -70,21 +70,21 @@ Public Function LowDecomposition(ByRef mat As Matrix) As Matrix
     Dim l_jk As Double
     Dim l_jj As Double
     
-    For I = 0 To size - 1
+    For i = 0 To size - 1
     
         sqSum = 0
-        For j = 0 To I
+        For j = 0 To i
             
-            m_ij = mat.ValueAt(I, j)
-            If I = j Then ' value on main diagonal
+            m_ij = mat.ValueAt(i, j)
+            If i = j Then ' value on main diagonal
                 diagValue = Math.Sqr(m_ij - sqSum)
-                decomp.ValueAt(I, j) = diagValue
+                decomp.ValueAt(i, j) = diagValue
             Else ' value under main diagonal
                 nonDiagSum = 0
                 
                 For k = 0 To j - 1
                     
-                    l_ik = decomp.ValueAt(I, k)
+                    l_ik = decomp.ValueAt(i, k)
                     l_jk = decomp.ValueAt(j, k)
                     nonDiagSum = nonDiagSum + l_ik * l_jk
                     
@@ -94,13 +94,13 @@ Public Function LowDecomposition(ByRef mat As Matrix) As Matrix
                 nonDiagValue = (m_ij - nonDiagSum) / l_jj
                 sqSum = sqSum + nonDiagValue * nonDiagValue
                 
-                decomp.ValueAt(I, j) = nonDiagValue
+                decomp.ValueAt(i, j) = nonDiagValue
    
             End If
             
         Next j
         
-    Next I
+    Next i
     
     Set LowDecomposition = decomp
     
@@ -122,7 +122,7 @@ Public Function ForwardSubstitution(ByRef mat As Matrix, ByRef vec As Vector) As
     Set solution = New Vector
     Set solution = solution.SetLength(size)
     
-    Dim I As Long
+    Dim i As Long
     Dim j As Long
     Dim l_ij As Double
     Dim y_j As Double
@@ -131,24 +131,24 @@ Public Function ForwardSubstitution(ByRef mat As Matrix, ByRef vec As Vector) As
     Dim sum As Double
     Dim solutionValue As Double
     
-    For I = 0 To size - 1
+    For i = 0 To size - 1
     
         sum = 0
         
-        For j = 0 To I - 1
+        For j = 0 To i - 1
         
-            l_ij = mat.ValueAt(I, j)
+            l_ij = mat.ValueAt(i, j)
             y_j = solution.ValueAt(j)
             sum = sum + l_ij * y_j
         
         Next j
         
-        b_i = vec.ValueAt(I)
-        l_ii = mat.ValueAt(I, I)
+        b_i = vec.ValueAt(i)
+        l_ii = mat.ValueAt(i, i)
         solutionValue = (b_i - sum) / l_ii
-        solution.ValueAt(I) = solutionValue
+        solution.ValueAt(i) = solutionValue
         
-    Next I
+    Next i
     
     Set ForwardSubstitution = solution
 
@@ -167,7 +167,7 @@ Public Function BackSubstutution(ByRef mat As Matrix, ByRef vec As Vector) As Ve
     Set solution = New Vector
     Set solution = solution.SetLength(size)
     
-    Dim I As Long
+    Dim i As Long
     Dim j As Long
     Dim sum As Double
     Dim u_ij As Double
@@ -176,24 +176,24 @@ Public Function BackSubstutution(ByRef mat As Matrix, ByRef vec As Vector) As Ve
     Dim u_ii As Double
     Dim solutionValue As Double
     
-    For I = lastIndex To 0 Step -1
+    For i = lastIndex To 0 Step -1
         
         sum = 0
         
-        For j = I + 1 To size - 1
+        For j = i + 1 To size - 1
         
-            u_ij = mat.ValueAtTransposed(I, j)
+            u_ij = mat.ValueAtTransposed(i, j)
             x_j = solution.ValueAt(j)
             sum = sum + u_ij * x_j
         
         Next j
         
-        y_i = vec.ValueAt(I)
-        u_ii = mat.ValueAtTransposed(I, I)
+        y_i = vec.ValueAt(i)
+        u_ii = mat.ValueAtTransposed(i, i)
         solutionValue = (y_i - sum) / u_ii
-        solution.ValueAt(I) = solutionValue
+        solution.ValueAt(i) = solutionValue
         
-    Next I
+    Next i
     
     Set BackSubstutution = solution
     

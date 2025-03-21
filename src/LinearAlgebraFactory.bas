@@ -18,10 +18,10 @@ Public Function CreateIdentityMatrix(ByVal size As Long) As Matrix
     Set mat = New Matrix
     mat.SetSize size, size
     
-    Dim I As Long
-    For I = 0 To size
-        mat.ValueAt(I, I) = 1
-    Next I
+    Dim i As Long
+    For i = 0 To size - 1
+        mat.ValueAt(i, i) = 1
+    Next i
     
     Set CreateIdentityMatrix = mat
 

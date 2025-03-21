@@ -18,20 +18,20 @@ Public Function MatMult(ByRef matA As IMatrix, ByRef matB As IMatrix) As Matrix
     result.SetSize matA.Rows, matB.Columns
     
     Dim sum As Double
-    Dim I As Long
+    Dim i As Long
     Dim j As Long
     Dim k As Long
-    For I = 0 To matA.Rows - 1
+    For i = 0 To matA.Rows - 1
         For j = 0 To matB.Columns - 1
             
             sum = 0
             For k = 0 To matA.Columns - 1
-                sum = sum + matA.ValueAt(I, k) * matB.ValueAt(k, j)
+                sum = sum + matA.ValueAt(i, k) * matB.ValueAt(k, j)
             Next k
             
-            result.ValueAt(I, j) = sum
+            result.ValueAt(i, j) = sum
         Next j
-    Next I
+    Next i
     
     Set MatMult = result
     
@@ -70,10 +70,10 @@ Private Function TransposeVector(ByRef vec As Vector) As Vector
     Set transposed = New Vector
     transposed.SetLength vec.Length
     
-    Dim I As Long
-    For I = 0 To vec.Length - 1
-        transposed.ValueAt(I) = vec.ValueAt(I)
-    Next I
+    Dim i As Long
+    For i = 0 To vec.Length - 1
+        transposed.ValueAt(i) = vec.ValueAt(i)
+    Next i
     
     If vec.Orientation = ColumnVector Then
         transposed.Orientation = RowVector
