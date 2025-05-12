@@ -143,7 +143,7 @@ Attribute AngleValueTo.VB_Description = "Returns the magnitude of the angle betw
     If Me.Equals(other) Then
         AngleValueTo = 0
     Else
-        AngleValueTo = WorksheetFunction.Acos(dotProduct / normProduct)
+        AngleValueTo = Math2.Acos(dotProduct / normProduct)
     End If
 End Function
 
@@ -160,13 +160,13 @@ Attribute AngleTo.VB_Description = "Returns the angle between two Vector2D objec
 End Function
 
 '@Description "Returns new Vector2D object that is a rotation of the original vector by a given angle in radians."
-Public Function Rotated(ByVal radians As Double) As Vector2D
+Public Function Rotated(ByVal Radians As Double) As Vector2D
 Attribute Rotated.VB_Description = "Returns new Vector2D object that is a rotation of the original vector by a given angle in radians."
     Dim cos As Double
-    cos = Math.cos(radians)
+    cos = Math.cos(Radians)
     
     Dim sin As Double
-    sin = Math.sin(radians)
+    sin = Math.sin(Radians)
     
     Dim rotatedVector As Vector2D
     Set rotatedVector = New Vector2D

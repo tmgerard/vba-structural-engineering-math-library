@@ -52,7 +52,7 @@ Private Sub TestCreateZeroRadiusPoint()
     Dim pnt As PointPolar
     
     'Act:
-    Set pnt = CreatePointPolar(0, WorksheetFunction.Pi)
+    Set pnt = CreatePointPolar(0, PI)
     
     'Assert:
     Assert.AreEqual expected, pnt.Theta, "Expected = " & expected & " vs. Actual = " & pnt.Theta
@@ -74,11 +74,11 @@ Private Sub TestCreateNonZeroRadiusPoint()
     'Arrange:
     Const ExpectedRadius As Double = 1
     Dim ExpectedAngle As Double
-    ExpectedAngle = WorksheetFunction.Pi
+    ExpectedAngle = PI
     Dim pnt As PointPolar
     
     'Act:
-    Set pnt = CreatePointPolar(1, WorksheetFunction.Pi)
+    Set pnt = CreatePointPolar(1, PI)
     
     'Assert:
     Assert.AreEqual ExpectedRadius, pnt.Radius, "Expected Radius = " & ExpectedRadius & " vs. Actual Radius = " & pnt.Radius
@@ -101,15 +101,15 @@ Private Sub TestCreateWithLargeAngle()
     'Arrange:
     Const ExpectedRadius As Double = 1
     Dim ExpectedAngle As Double
-    ExpectedAngle = -WorksheetFunction.Pi / 2
+    ExpectedAngle = -PI / 2
     Dim pnt As PointPolar
     
     'Act:
-    Set pnt = CreatePointPolar(1, 7 * WorksheetFunction.Pi / 2)
+    Set pnt = CreatePointPolar(1, 7 * PI / 2)
     
     'Assert:
-    Assert.AreEqual ExpectedRadius, pnt.Radius, "Expected Radius = " & ExpectedRadius & " vs. Actual Radius = " & pnt.Radius
-    Assert.AreEqual ExpectedAngle, pnt.Theta, "Expected Angle = " & ExpectedAngle & " vs. Actual Angle = " & pnt.Theta
+    Assert.IsTrue Doubles.Equal(ExpectedRadius, pnt.Radius), "Expected Radius = " & ExpectedRadius & " vs. Actual Radius = " & pnt.Radius
+    Assert.IsTrue Doubles.Equal(ExpectedAngle, pnt.Theta), "Expected Angle = " & ExpectedAngle & " vs. Actual Angle = " & pnt.Theta
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -133,7 +133,7 @@ Private Sub TestCreateSetAngleWithZeroRadius()
     'Act:
     Set pnt = New PointPolar
     pnt.Radius = 0
-    pnt.Theta = WorksheetFunction.Pi / 2
+    pnt.Theta = PI / 2
     
     'Assert:
     Assert.AreEqual expected, pnt.Theta, "Expected Angle = " & expected & " vs. Actual Angle = " & pnt.Theta
@@ -158,7 +158,7 @@ Private Sub TestCreateSetRadiusToZero()
     
     'Act:
     Set pnt = New PointPolar
-    pnt.Theta = WorksheetFunction.Pi / 2
+    pnt.Theta = PI / 2
     pnt.Radius = 0  ' setting radius to zero after setting theta should force theta to zero
     
     'Assert:
@@ -184,7 +184,7 @@ Private Sub TestToPoint2D()
     Dim pnt As PointPolar
     
     'Act:
-    Set pnt = CreatePointPolar(0.5, WorksheetFunction.Pi)
+    Set pnt = CreatePointPolar(0.5, PI)
     Dim actual As Point2D
     Set actual = pnt.ToPoint2D
     

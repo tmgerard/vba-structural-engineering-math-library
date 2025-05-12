@@ -226,7 +226,7 @@ Private Sub TestToPointPolar()
     
     'Arrange:
     Dim expected As PointPolar
-    Set expected = CreatePointPolar(7#, WorksheetFunction.Pi / 6)
+    Set expected = CreatePointPolar(7#, PI / 6)
     
     Dim pnt As Point2D
     Set pnt = CreatePoint2D(7# * Math.Sqr(3#) / 2#, 7# / 2#)

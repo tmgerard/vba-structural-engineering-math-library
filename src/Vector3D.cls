@@ -120,8 +120,8 @@ Public Function AngleValueTo(ByVal other As Vector3D) As Double
     
     Dim normProduct As Double
     normProduct = Me.Norm * other.Norm
-    
-    AngleValueTo = WorksheetFunction.Acos(dotProduct / normProduct)
+
+    AngleValueTo = Math2.Acos(dotProduct / normProduct)
 End Function
 
 ' TODO: Fix 3D vector angle function

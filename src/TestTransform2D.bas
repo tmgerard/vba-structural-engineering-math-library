@@ -96,7 +96,7 @@ Private Sub TestRotZ()
     
     Dim trans As Transform2D
     Set trans = New Transform2D
-    Set trans = trans.RotZ(WorksheetFunction.radians(90))
+    Set trans = trans.RotZ(Radians(90))
     
     'Act:
     Dim actual As Point2D

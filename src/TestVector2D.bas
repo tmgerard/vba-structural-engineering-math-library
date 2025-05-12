@@ -291,7 +291,7 @@ Private Sub TestAngleValuePi()
     
     'Arrange:
     Dim expected As Double
-    expected = WorksheetFunction.Pi
+    expected = PI
 
     'Act:
     Dim actual As Double
@@ -313,7 +313,7 @@ Private Sub TestAngleValuePiOverFourPositiveRotation()
     
     'Arrange:
     Dim expected As Double
-    expected = WorksheetFunction.Pi / 4
+    expected = PI / 4
 
     'Act:
     Dim actual As Double
@@ -335,7 +335,7 @@ Private Sub TestAngleValuePiOverFourNegativeRotation()
     
     'Arrange:
     Dim expected As Double
-    expected = WorksheetFunction.Pi / 4
+    expected = PI / 4
 
     'Act:
     Dim actual As Double
@@ -387,7 +387,7 @@ Private Sub TestRotatePositiveAngle()
 
     'Act:
     Dim actual As Vector2D
-    Set actual = east.Rotated(WorksheetFunction.Pi / 4)
+    Set actual = east.Rotated(PI / 4)
 
     'Assert:
     Assert.IsTrue actual.Equals(expected)
@@ -413,7 +413,7 @@ Private Sub TestRotateNegativeAngle()
 
     'Act:
     Dim actual As Vector2D
-    Set actual = east.Rotated(-WorksheetFunction.Pi / 4)
+    Set actual = east.Rotated(-PI / 4)
 
     'Assert:
     Assert.IsTrue actual.Equals(expected)
@@ -439,7 +439,7 @@ Private Sub TestRotatePiOverTwo()
 
     'Act:
     Dim actual As Vector2D
-    Set actual = east.Rotated(WorksheetFunction.Pi / 2)
+    Set actual = east.Rotated(PI / 2)
 
     'Assert:
     Assert.IsTrue actual.Equals(expected)
@@ -465,7 +465,7 @@ Private Sub TestRotatePi()
 
     'Act:
     Dim actual As Vector2D
-    Set actual = east.Rotated(WorksheetFunction.Pi)
+    Set actual = east.Rotated(PI)
 
     'Assert:
     Assert.IsTrue actual.Equals(expected)

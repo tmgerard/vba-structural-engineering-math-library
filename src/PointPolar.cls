@@ -30,7 +30,7 @@ Public Property Let Radius(ByVal value As Double)
     Else
         If value < 0 Then
             this.rad = -value
-            this.rot = this.rot + WorksheetFunction.Pi
+            this.rot = this.rot + PI
         Else
             this.rad = value
         End If
@@ -53,15 +53,12 @@ End Property
 Private Function SetRotationWithinRange(ByVal rtValue As Double) As Double
     ' rotations will be normalized to a value between negative pi and pi radians
     Dim TwoPi As Double
-    TwoPi = 2 * WorksheetFunction.Pi
-    
-    Dim Pi As Double
-    Pi = WorksheetFunction.Pi
+    TwoPi = 2 * PI
     
     Const IterationLimit As Long = 10000
     Dim loopCount As Long
     loopCount = 0
-    While Math.Abs(rtValue) > Pi
+    While Math.Abs(rtValue) > PI
     
         loopCount = loopCount + 1
         If loopCount > IterationLimit Then ' infinte loop likely
@@ -70,9 +67,9 @@ Private Function SetRotationWithinRange(ByVal rtValue As Double) As Double
                       "Inifinite loop detected when aliasing rotation value!"
         End If
         
-        rtValue = rtValue + Pi
+        rtValue = rtValue + PI
         rtValue = rtValue - Int(rtValue / TwoPi) * TwoPi
-        rtValue = rtValue - this.rot - Pi
+        rtValue = rtValue - this.rot - PI
     Wend
     
     SetRotationWithinRange = rtValue
@@ -97,7 +94,7 @@ Public Function Equals(ByVal other As PointPolar) As Boolean
     ElseIf Not TypeOf other Is PointPolar Then
         Equals = False
     Else
-        If Math.Abs(Me.Theta) = WorksheetFunction.Pi Then ' angle aliasing can return either pi or -pi which are equivalent rotations
+        If Math.Abs(Me.Theta) = PI Then ' angle aliasing can return either pi or -pi which are equivalent rotations
             Equals = Doubles.Equal(Me.Radius, other.Radius) And _
                      Doubles.Equal(Math.Abs(Me.Theta), Math.Abs(other.Theta))
         Else

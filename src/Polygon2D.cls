@@ -156,7 +156,7 @@ Attribute ContainsPoint.VB_Description = "Returns True if given point falls with
     
     Next index
     
-    ContainsPoint = Doubles.Equal(angleSum, 2 * WorksheetFunction.Pi)
+    ContainsPoint = Doubles.Equal(angleSum, 2 * PI)
     
 End Function
 
