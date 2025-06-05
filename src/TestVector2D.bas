@@ -164,6 +164,36 @@ TestFail:
 End Sub
 
 '@TestMethod("Method")
+Private Sub TestProjectionOver()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim expected As Double
+    expected = 9.19238815542512
+    
+    Dim vec As Vector2D
+    Set vec = CreateVector2D(10, 3)
+    
+    Dim dirVec As Vector2D
+    Set dirVec = CreateVector2D(1, 1)
+    
+    'Act:
+    Dim actual As Double
+    actual = vec.ProjectionOver(dirVec)
+    
+    Debug.Print Format(actual, "#.0000")
+
+    'Assert:
+    Assert.IsTrue Doubles.Equal(actual, expected), "Expected = " & expected & " vs. Actual = " & actual
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
 Private Sub TestCrossProduct()
     On Error GoTo TestFail
     
