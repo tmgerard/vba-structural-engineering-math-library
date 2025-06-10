@@ -2,6 +2,15 @@ Attribute VB_Name = "Factory2D"
 '@Folder("StructuralMath.AnalyticGeometry.2D")
 Option Explicit
 
+Public Function CreateLine2D(ByRef pntOnLine As Point2D, ByRef dirVec As Vector2D) As Line2D
+    Dim line As Line2D
+    Set line = New Line2D
+    Set line.Base = pntOnLine
+    Set line.direction = dirVec
+    
+    Set CreateLine2D = line
+End Function
+
 Public Function CreatePoint2D(ByVal xValue As Double, ByVal yValue As Double) As Point2D
     Dim pnt As Point2D
     Set pnt = New Point2D
