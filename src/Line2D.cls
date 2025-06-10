@@ -60,8 +60,8 @@ Public Function PerpendicularThrough(ByRef point As Point2D) As Line2D
     Dim newLine As Line2D
     Set newLine = New Line2D
     With newLine
-        .Base = point
-        .direction = this.direction.Perpendicular
+        Set .Base = point
+        Set .direction = this.direction.Perpendicular
     End With
     
     Set PerpendicularThrough = newLine
@@ -72,8 +72,8 @@ Public Function ParallelThrough(ByRef point As Point2D) As Line2D
     Dim newLine As Line2D
     Set newLine = New Line2D
     With newLine
-        .Base = point
-        .direction = this.direction
+        Set .Base = point
+        Set .direction = this.direction
     End With
     
     Set ParallelThrough = newLine
