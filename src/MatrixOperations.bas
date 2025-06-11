@@ -83,3 +83,23 @@ Private Function TransposeVector(ByRef vec As Vector) As Vector
     
     Set TransposeVector = transposed
 End Function
+
+Public Sub PrintMatrix(ByRef mat As Matrix)
+    Dim rowText As String
+    rowText = ""
+    
+    Dim i As Long
+    Dim j As Long
+    For i = 0 To mat.Rows - 1
+        For j = 0 To mat.Columns - 1
+            If j = mat.Columns - 1 Then
+                rowText = rowText & mat.ValueAt(i, j)
+            Else
+                rowText = rowText & mat.ValueAt(i, j) & vbTab
+            End If
+        Next j
+        rowText = rowText & vbCrLf
+    Next i
+    
+    Debug.Print rowText
+End Sub
