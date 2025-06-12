@@ -84,7 +84,7 @@ Private Function TransposeVector(ByRef vec As Vector) As Vector
     Set TransposeVector = transposed
 End Function
 
-Public Sub PrintMatrix(ByRef mat As Matrix)
+Public Sub PrintMatrix(ByRef mat As IMatrix)
     Dim rowText As String
     rowText = ""
     
