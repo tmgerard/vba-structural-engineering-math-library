@@ -186,7 +186,7 @@ Private Sub TestUpperBackSubstitution()
 
     'Act:
     Dim actual As Vector
-    Set actual = solver.BackSubstutution(lowMatrix, lowSolution)
+    Set actual = solver.BackSubstitution(lowMatrix, lowSolution)
 
     'Assert:
     Assert.IsTrue solution.Equals(actual)

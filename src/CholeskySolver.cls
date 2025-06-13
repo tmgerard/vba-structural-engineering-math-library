@@ -28,7 +28,7 @@ Public Function Solve(ByRef mat As Matrix, ByRef vec As Vector) As Vector
     Dim lowSolution As Vector
     Set lowSolution = ForwardSubstitution(lowMat, vec)
     
-    Set Solve = BackSubstutution(lowMat, lowSolution)
+    Set Solve = BackSubstitution(lowMat, lowSolution)
     
 End Function
 
@@ -154,7 +154,7 @@ Public Function ForwardSubstitution(ByRef mat As Matrix, ByRef vec As Vector) As
 
 End Function
 
-Public Function BackSubstutution(ByRef mat As Matrix, ByRef vec As Vector) As Vector
+Public Function BackSubstitution(ByRef mat As Matrix, ByRef vec As Vector) As Vector
 
     
     Dim size As Long
@@ -195,7 +195,7 @@ Public Function BackSubstutution(ByRef mat As Matrix, ByRef vec As Vector) As Ve
         
     Next i
     
-    Set BackSubstutution = solution
+    Set BackSubstitution = solution
     
 End Function
 
@@ -203,3 +203,4 @@ End Function
 Private Function ILinearEqSolver_Solve(mat As Matrix, vec As Vector) As Vector
     Set ILinearEqSolver_Solve = Me.Solve(mat, vec)
 End Function
+
