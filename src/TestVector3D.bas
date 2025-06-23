@@ -226,24 +226,106 @@ End Sub
 '@TestMethod("Method")
 Private Sub TestAngleValueTo()
     On Error GoTo TestFail
-    
+
     'Arrange:
     Dim expected As Double
     expected = 1.872 ' radians
-    
+
     'Act:
     Dim actual As Double
     actual = vecA.AngleValueTo(vecB)
-    
+
     'Assert:
     Assert.IsTrue Doubles.Equal(expected, actual, 0.001), "Expected: " & expected & " Actual: " & actual
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
     On Error Resume Next
-    
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+''@TestMethod("Method")
+'Private Sub TestAngleToPositive()
+'    On Error GoTo TestFail
+'
+'    'Arrange:
+'    Dim expected As Double
+'    expected = Math2.PI / 2 ' radians
+'
+'    Dim vecX As Vector3D
+'    Set vecX = New Vector3D
+'    With vecX
+'        .u = 1
+'        .v = 0
+'        .w = 0
+'    End With
+'
+'    Dim vecY As Vector3D
+'    Set vecY = New Vector3D
+'    With vecY
+'        .u = 0
+'        .v = 1
+'        .w = 0
+'    End With
+'
+'    'Act:
+'    Dim actual As Double
+'    actual = vecX.AngleTo(vecY)
+'
+'    'Assert:
+'    Assert.IsTrue Doubles.Equal(expected, actual, 0.001), "Expected: " & expected & " Actual: " & actual
+'
+'TestExit:
+'    '@Ignore UnhandledOnErrorResumeNext
+'    On Error Resume Next
+'
+'    Exit Sub
+'TestFail:
+'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+'    Resume TestExit
+'End Sub
+'
+''@TestMethod("Method")
+'Private Sub TestAngleToNegative()
+'    On Error GoTo TestFail
+'
+'    'Arrange:
+'    Dim expected As Double
+'    expected = -Math2.PI / 2  ' radians
+'
+'    Dim vecX As Vector3D
+'    Set vecX = New Vector3D
+'    With vecX
+'        .u = 1
+'        .v = 0
+'        .w = 0
+'    End With
+'
+'    Dim vecY As Vector3D
+'    Set vecY = New Vector3D
+'    With vecY
+'        .u = 0
+'        .v = -1
+'        .w = 0
+'    End With
+'
+'    'Act:
+'    Dim actual As Double
+'    actual = vecX.AngleTo(vecY)
+'
+'    'Assert:
+'    Assert.IsTrue Doubles.Equal(expected, actual, 0.001), "Expected: " & expected & " Actual: " & actual
+'
+'TestExit:
+'    '@Ignore UnhandledOnErrorResumeNext
+'    On Error Resume Next
+'
+'    Exit Sub
+'TestFail:
+'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+'    Resume TestExit
+'End Sub

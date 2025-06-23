@@ -124,15 +124,16 @@ Public Function AngleValueTo(ByVal other As Vector3D) As Double
     AngleValueTo = Math2.Acos(dotProduct / normProduct)
 End Function
 
-' TODO: Fix 3D vector angle function
+
 'Public Function AngleTo(ByVal other As Vector3D) As Double
 '    Dim value As Double
 '    value = Me.AngleValueTo(other)
 '
-'    Dim crossProduct As Double
-'    crossProduct = Me.Cross(other)
+'    Dim crossProduct As Vector3D
+'    Set crossProduct = Me.Cross(other)
 '
-'    AngleTo = Math.Sgn(crossProduct) * value
+'    ' NOTE: need to check if there are other ways to do this. Will likely not function if rotating along x-z or y-x planes
+'    AngleTo = Math.Sgn(crossProduct.w) * value
 'End Function
 
 Public Function Equals(ByVal other As Vector3D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
