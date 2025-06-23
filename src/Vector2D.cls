@@ -216,14 +216,14 @@ Attribute Cosine.VB_Description = "Returns the Vector2D's direction cosine value
     Cosine = this.u / Me.Norm
 End Function
 
-Public Function Equals(ByVal other As Vector2D) As Boolean
+Public Function Equals(ByVal other As Vector2D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
     ElseIf Not TypeOf other Is Vector2D Then ' other is not a Vector2D
         Equals = False
     Else    ' check that u and v values are the same
-        Equals = Doubles.Equal(this.u, other.u) And Doubles.Equal(this.v, other.v)
+        Equals = Doubles.Equal(this.u, other.u, tolerance) And Doubles.Equal(this.v, other.v, tolerance)
     End If
 
 End Function

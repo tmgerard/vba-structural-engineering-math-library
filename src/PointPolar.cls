@@ -87,7 +87,7 @@ Public Function ToPoint2D() As Point2D
     Set ToPoint2D = newPoint
 End Function
 
-Public Function Equals(ByVal other As PointPolar) As Boolean
+Public Function Equals(ByVal other As PointPolar, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
@@ -95,11 +95,11 @@ Public Function Equals(ByVal other As PointPolar) As Boolean
         Equals = False
     Else
         If Math.Abs(Me.Theta) = PI Then ' angle aliasing can return either pi or -pi which are equivalent rotations
-            Equals = Doubles.Equal(Me.Radius, other.Radius) And _
-                     Doubles.Equal(Math.Abs(Me.Theta), Math.Abs(other.Theta))
+            Equals = Doubles.Equal(Me.Radius, other.Radius, tolerance) And _
+                     Doubles.Equal(Math.Abs(Me.Theta), Math.Abs(other.Theta), tolerance)
         Else
-            Equals = Doubles.Equal(Me.Radius, other.Radius) And _
-                     Doubles.Equal(Me.Theta, other.Theta)
+            Equals = Doubles.Equal(Me.Radius, other.Radius, tolerance) And _
+                     Doubles.Equal(Me.Theta, other.Theta, tolerance)
         End If
     End If
 

@@ -93,14 +93,14 @@ Attribute ToPointPolar.VB_Description = "Converts the Point2D to a PointPolar ob
     Set ToPointPolar = CreatePointPolar(Math.Sqr(this.x ^ 2 + this.y ^ 2), Math2.Atan2(this.y, this.x))
 End Function
 
-Public Function Equals(ByVal other As Point2D) As Boolean
+Public Function Equals(ByVal other As Point2D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
     ElseIf Not TypeOf other Is Point2D Then ' other is not a Point2D
         Equals = False
     Else    ' check that x and y values are the same
-        Equals = Doubles.Equal(this.x, other.x) And Doubles.Equal(this.y, other.y)
+        Equals = Doubles.Equal(this.x, other.x, tolerance) And Doubles.Equal(this.y, other.y, tolerance)
     End If
 
 End Function

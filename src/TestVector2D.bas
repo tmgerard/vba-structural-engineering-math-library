@@ -180,8 +180,6 @@ Private Sub TestProjectionOver()
     'Act:
     Dim actual As Double
     actual = vec.ProjectionOver(dirVec)
-    
-    Debug.Print Format(actual, "#.0000")
 
     'Assert:
     Assert.IsTrue Doubles.Equal(actual, expected), "Expected = " & expected & " vs. Actual = " & actual

@@ -131,7 +131,7 @@ Public Function ScaleValues(ByRef factor As Double) As Matrix
     Set ScaleValues = Me
 End Function
 
-Public Function Equals(ByRef other As Matrix) As Boolean
+Public Function Equals(ByRef other As Matrix, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
@@ -146,7 +146,10 @@ Public Function Equals(ByRef other As Matrix) As Boolean
         Dim columnIndex As Long
         For rowIndex = 0 To this.numRows - 1
             For columnIndex = 0 To this.numColumns - 1
-                If Not Doubles.Equal(Me.ValueAt(rowIndex, columnIndex), other.ValueAt(rowIndex, columnIndex)) Then
+                If Not Doubles.Equal( _
+                        Me.ValueAt(rowIndex, columnIndex), _
+                        other.ValueAt(rowIndex, columnIndex), _
+                        tolerance) Then
                     Equals = False
                     Exit Function
                 End If

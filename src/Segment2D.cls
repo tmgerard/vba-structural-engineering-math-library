@@ -178,14 +178,14 @@ Private Function IsValid(ByRef ratio As Double) As Boolean
     IsValid = Not ratio < MinRatio And Not ratio > MaxRatio
 End Function
 
-Public Function Equals(ByVal other As Segment2D) As Boolean
+Public Function Equals(ByVal other As Segment2D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then
         Equals = True
     ElseIf Not TypeOf other Is Segment2D Then
         Equals = False
     Else
-        Equals = this.StartPoint.Equals(other.StartPoint) And this.EndPoint.Equals(other.EndPoint)
+        Equals = this.StartPoint.Equals(other.StartPoint, tolerance) And this.EndPoint.Equals(other.EndPoint, tolerance)
     End If
 
 End Function

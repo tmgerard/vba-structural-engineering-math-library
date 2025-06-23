@@ -135,16 +135,16 @@ End Function
 '    AngleTo = Math.Sgn(crossProduct) * value
 'End Function
 
-Public Function Equals(ByVal other As Vector3D) As Boolean
+Public Function Equals(ByVal other As Vector3D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
     ElseIf Not TypeOf other Is Vector3D Then ' other is not a Vector3D
         Equals = False
     Else    ' check that u, v, and w values are the same
-        Equals = Doubles.Equal(this.u, other.u) And _
-                 Doubles.Equal(this.v, other.v) And _
-                 Doubles.Equal(this.w, other.w)
+        Equals = Doubles.Equal(this.u, other.u, tolerance) And _
+                 Doubles.Equal(this.v, other.v, tolerance) And _
+                 Doubles.Equal(this.w, other.w, tolerance)
     End If
 
 End Function

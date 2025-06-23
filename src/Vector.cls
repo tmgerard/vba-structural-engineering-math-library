@@ -81,7 +81,7 @@ Public Function SetData(ByRef vecData() As Double) As Vector
     Set SetData = Me
 End Function
 
-Public Function Equals(ByRef other As Vector) As Boolean
+Public Function Equals(ByRef other As Vector, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
@@ -90,7 +90,7 @@ Public Function Equals(ByRef other As Vector) As Boolean
     Else
         Dim index As Long
         For index = LBound(this.Data) To UBound(this.Data)
-            If Not Doubles.Equal(Me.ValueAt(index), other.ValueAt(index)) Then
+            If Not Doubles.Equal(Me.ValueAt(index), other.ValueAt(index), tolerance) Then
                 Equals = False
                 Exit Function
             End If

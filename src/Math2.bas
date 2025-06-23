@@ -5,6 +5,9 @@ Option Explicit
 ' Define PI to remove worksheet function dependency if used outside of Excel
 Public Const PI As Double = 3.14159265358979
 
+' Constant defining default tolerance for floating point value comparisons
+Public Const CompareTolerance As Double = 0.00001
+
 Public Function Degrees(ByVal rad As Double) As Double
     Degrees = rad * (180# / PI)
 End Function

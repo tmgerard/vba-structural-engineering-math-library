@@ -2,14 +2,12 @@ Attribute VB_Name = "Doubles"
 '@Folder("StructuralMath.Utilities")
 Option Explicit
 
-Private Const CompareTolerance As Double = 0.00001
-
 '@Description "Compares two doubles with a given tolerance for equality."
 Public Function Equal(ByVal left As Double, ByVal right As Double, _
     Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 Attribute Equal.VB_Description = "Compares two doubles with a given tolerance for equality."
     
-    Equal = Math.Abs(right - left) < tolerance
+    Equal = Math.Abs(right - left) <= tolerance
 
 End Function
 

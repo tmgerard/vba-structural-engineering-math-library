@@ -55,16 +55,28 @@ Public Function DistanceTo(ByVal other As Point3D) As Double
     DistanceTo = Math.Sqr(delta_x ^ 2 + delta_y ^ 2 + delta_z ^ 2)
 End Function
 
-Public Function Equals(ByVal other As Point3D) As Boolean
+Public Function Subtract(ByVal other As Point3D) As Vector3D
+    Dim subtractVector As Vector3D
+    Set subtractVector = New Vector3D
+    With subtractVector
+        .u = this.x - other.x
+        .v = this.y - other.y
+        .w = this.z - other.z
+    End With
+    
+    Set Subtract = subtractVector
+End Function
+
+Public Function Equals(ByVal other As Point3D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
     ElseIf Not TypeOf other Is Point3D Then ' other is not a Point3D
         Equals = False
     Else    ' check that x, y, and z values are the same
-        Equals = Doubles.Equal(this.x, other.x) And _
-                 Doubles.Equal(this.y, other.y) And _
-                 Doubles.Equal(this.z, other.z)
+        Equals = Doubles.Equal(this.x, other.x, tolerance) And _
+                 Doubles.Equal(this.y, other.y, tolerance) And _
+                 Doubles.Equal(this.z, other.z, tolerance)
     End If
 
 End Function
