@@ -81,7 +81,7 @@ Public Function ToPoint2D() As Point2D
     Set newPoint = New Point2D
     With newPoint
         .x = this.rad * Math.cos(this.rot)
-        .y = this.rot * Math.sin(this.rot)
+        .y = this.rad * Math.sin(this.rot)
     End With
     
     Set ToPoint2D = newPoint
