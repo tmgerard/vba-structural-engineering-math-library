@@ -1,0 +1,4 @@
+# VBA: Prevent LF Normalization
+*.bas -text
+*.cls -text
+*.frm -text
