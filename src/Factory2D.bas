@@ -2,11 +2,12 @@ Attribute VB_Name = "Factory2D"
 '@Folder("StructuralMath.AnalyticGeometry.2D")
 Option Explicit
 
-Public Function CreateLine2D(ByRef pntOnLine As Point2D, ByRef dirVec As Vector2D) As Line2D
+Public Function CreateLine2D(ByRef pntOnLine As Point2D, ByRef dirVector As Vector2D) As Line2D
     Dim line As Line2D
     Set line = New Line2D
+    
     Set line.Base = pntOnLine
-    Set line.direction = dirVec
+    Set line.Direction = dirVector
     
     Set CreateLine2D = line
 End Function
@@ -23,9 +24,9 @@ End Function
 Public Function CreatePointPolar(ByVal radiusValue As Double, ByVal angleValue As Double) As PointPolar
     Dim pnt As PointPolar
     Set pnt = New PointPolar
-    pnt.Radius = radiusValue
     pnt.Theta = angleValue
-    
+    pnt.Radius = radiusValue
+
     Set CreatePointPolar = pnt
 End Function
 

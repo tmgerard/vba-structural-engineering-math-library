@@ -103,9 +103,9 @@ Attribute Dot.VB_Description = "Returns the dot product of to Vector2D objects."
 End Function
 
 '@Description "Returns the projection of a Vector2D object over another Vector2D object."
-Public Function ProjectionOver(ByVal direction As Vector2D) As Double
+Public Function ProjectionOver(ByVal Direction As Vector2D) As Double
 Attribute ProjectionOver.VB_Description = "Returns the projection of a Vector2D object over another Vector2D object."
-    ProjectionOver = Me.Dot(direction.Normalized)
+    ProjectionOver = Me.Dot(Direction.Normalized)
 End Function
 
 '@Description "Returns the cross product of two Vector2D objects."
@@ -216,14 +216,14 @@ Attribute Cosine.VB_Description = "Returns the Vector2D's direction cosine value
     Cosine = this.u / Me.Norm
 End Function
 
-Public Function Equals(ByVal other As Vector2D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
+Public Function Equals(ByVal other As Vector2D) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
     ElseIf Not TypeOf other Is Vector2D Then ' other is not a Vector2D
         Equals = False
     Else    ' check that u and v values are the same
-        Equals = Doubles.Equal(this.u, other.u, tolerance) And Doubles.Equal(this.v, other.v, tolerance)
+        Equals = Doubles.Equal(this.u, other.u) And Doubles.Equal(this.v, other.v)
     End If
 
 End Function

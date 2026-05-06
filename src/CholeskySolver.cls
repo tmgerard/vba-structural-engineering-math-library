@@ -17,7 +17,7 @@ Public Enum CholeskyErrors
     Unsolvable
 End Enum
 
-Public Function Solve(ByRef mat As Matrix, ByRef vec As Vector) As Vector
+Public Function Solve(ByRef mat As IMatrix, ByRef vec As Vector) As Vector
 
     ' check that matrix and vector work for Cholesky Decomposition
     ValidateSystem mat, vec
@@ -32,84 +32,68 @@ Public Function Solve(ByRef mat As Matrix, ByRef vec As Vector) As Vector
     
 End Function
 
-Private Sub ValidateSystem(ByRef mat As Matrix, ByRef vec As Vector)
-
+Private Sub ValidateSystem(ByRef mat As IMatrix, ByRef vec As Vector)
+    
+    If Not mat.Rows = mat.Columns Then ' not a square matrix
+        Err.Raise Number:=CholeskyErrors.NotSquare, _
+                  Source:="Cholesky.ValidateSystem", _
+                  Description:="System matrix must be square"
+    End If
+    
     If Not mat.Columns = vec.Length Then
         Err.Raise Number:=CholeskyErrors.BadSize, _
                   Source:="Cholesky.ValidateSystem", _
                   Description:="Size mismatch between matrix and vector."
     End If
-    
-    If Not mat.IsSquare Then
-        Err.Raise Number:=CholeskyErrors.NotSquare, _
-                  Source:="Cholesky.ValidateSystem", _
-                  Description:="System matrix must be square"
-    End If
+       
 End Sub
 
 Public Function LowDecomposition(ByRef mat As Matrix) As Matrix
 
-    On Error GoTo ErrorHandler
-    
     Dim size As Long
     size = mat.Rows
-    
+
     Dim decomp As Matrix
     Set decomp = New Matrix
-    Set decomp = decomp.SetSize(size, size)
-    
+    decomp.SetSize size, size
+
     Dim i As Long
     Dim j As Long
     Dim k As Long
-    Dim sqSum As Double
-    Dim m_ij As Double
-    Dim diagValue As Double
-    Dim nonDiagValue
-    Dim nonDiagSum As Double
-    Dim l_ik As Double
-    Dim l_jk As Double
-    Dim l_jj As Double
+    Dim innerSum As Double
+    Dim diagonalArg As Double
     
     For i = 0 To size - 1
-    
-        sqSum = 0
-        For j = 0 To i
+
+        ' --- Off-diagonal elements (j < i) ---
+        For j = 0 To i - 1
+            innerSum = 0
             
-            m_ij = mat.ValueAt(i, j)
-            If i = j Then ' value on main diagonal
-                diagValue = Math.Sqr(m_ij - sqSum)
-                decomp.ValueAt(i, j) = diagValue
-            Else ' value under main diagonal
-                nonDiagSum = 0
-                
-                For k = 0 To j - 1
-                    
-                    l_ik = decomp.ValueAt(i, k)
-                    l_jk = decomp.ValueAt(j, k)
-                    nonDiagSum = nonDiagSum + l_ik * l_jk
-                    
-                Next k
-                
-                l_jj = decomp.ValueAt(j, j)
-                nonDiagValue = (m_ij - nonDiagSum) / l_jj
-                sqSum = sqSum + nonDiagValue * nonDiagValue
-                
-                decomp.ValueAt(i, j) = nonDiagValue
-   
-            End If
+            For k = 0 To j - 1
+                innerSum = innerSum + decomp.ValueAt(i, k) * decomp.ValueAt(j, k)
+            Next k
             
+            decomp.ValueAt(i, j) = (mat.ValueAt(i, j) - innerSum) / decomp.ValueAt(j, j)
         Next j
+
+        ' --- Diagonal element (j = i) ---
+        innerSum = 0
+        For k = 0 To i - 1
+            innerSum = innerSum + decomp.ValueAt(i, k) ^ 2
+        Next k
+
+        diagonalArg = mat.ValueAt(i, i) - innerSum
         
+        If diagonalArg <= 0 Then
+            Err.Raise CholeskyErrors.Unsolvable, "Cholesky.LowDecomposition", _
+                "Matrix is not positive definite; Cholesky decomposition does not exist."
+        End If
+        
+        decomp.ValueAt(i, i) = Math.Sqr(diagonalArg)
+
     Next i
     
     Set LowDecomposition = decomp
-    
-    Exit Function
-    
-ErrorHandler:
-    
-    Err.Raise CholeskyErrors.Unsolvable, "Cholesky.LowDecomposition", _
-        "System of equation is not solvable by Choleski Decomposition."
     
 End Function
 
@@ -200,7 +184,6 @@ Public Function BackSubstitution(ByRef mat As Matrix, ByRef vec As Vector) As Ve
 End Function
 
 ' ILinearEqSolver Implementation
-Private Function ILinearEqSolver_Solve(mat As Matrix, vec As Vector) As Vector
+Private Function ILinearEqSolver_Solve(mat As IMatrix, vec As IMatrix) As Vector
     Set ILinearEqSolver_Solve = Me.Solve(mat, vec)
 End Function
-

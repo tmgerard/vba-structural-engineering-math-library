@@ -200,3 +200,59 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+'@TestMethod("Initialization")
+Private Sub TestInitializeWithNegativeRadius()
+    On Error GoTo TestFail
+    
+    ' polar point will convert negative radius to positive
+    ' and adjust angle so it remains an equivalent point
+    
+    'Arrange:
+    Dim expected As PointPolar
+    Set expected = CreatePointPolar(1, PI)
+    Dim pnt As PointPolar
+    
+    'Act:
+    Set pnt = CreatePointPolar(-1#, 0)
+    
+    'Assert:
+    Assert.IsTrue pnt.Equals(expected)
+
+TestExit:
+    '@Ignore UnhandledOnErrorResumeNext
+    On Error Resume Next
+    
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestEqualsPiAndNegativePi()
+    On Error GoTo TestFail
+    ' point polar stores (-pi, pi]
+    ' so a point created with -pi or pi, with the same
+    ' radius should be equivalent
+    
+    'Arrange:
+    Dim pnt1 As PointPolar
+    Dim pnt2 As PointPolar
+    
+    'Act:
+    Set pnt1 = CreatePointPolar(1#, PI)
+    Set pnt2 = CreatePointPolar(1#, -PI)
+    
+    'Assert:
+    Assert.IsTrue pnt1.Equals(pnt2)
+
+TestExit:
+    '@Ignore UnhandledOnErrorResumeNext
+    On Error Resume Next
+    
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub

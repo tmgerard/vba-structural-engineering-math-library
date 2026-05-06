@@ -6,8 +6,15 @@ Option Private Module
 '@TestModule
 '@Folder("Tests.StructuralMath.AnalyticGeometry.2D")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+#Const LateBind = LateBindTests
+
+#If LateBind Then
+    Private Assert As Object
+    Private Fakes As Object
+#Else
+    Private Assert As Rubberduck.AssertClass
+    Private Fakes As Rubberduck.FakesProvider
+#End If
 
 Private point1 As Point2D
 Private point2 As Point2D
@@ -15,8 +22,13 @@ Private point2 As Point2D
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'this method runs once per module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    #If LateBind Then
+        Set Assert = CreateObject("Rubberduck.AssertClass")
+        Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    #Else
+        Set Assert = New Rubberduck.AssertClass
+        Set Fakes = New Rubberduck.FakesProvider
+    #End If
     
     Set point1 = New Point2D
     With point1

@@ -348,3 +348,64 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+'@TestMethod("Basic Operation")
+Private Sub TestPointAtStart()
+    On Error GoTo TestFail
+    
+    Dim actual As Point2D
+    Set actual = segment.PointAt(0)
+    Assert.IsTrue actual.Equals(segment.StartPoint)
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Basic Operation")
+Private Sub TestPointAtEnd()
+    On Error GoTo TestFail
+    
+    Dim actual As Point2D
+    Set actual = segment.PointAt(1)
+    Assert.IsTrue actual.Equals(segment.EndPoint)
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Expected Error")
+Private Sub TestPointAt_NegativeRatio()
+    On Error GoTo TestFail
+    
+    Const ExpectedError As Long = SegmentRatioError.BadValue
+    On Error GoTo TestFail
+    Dim point As Point2D
+    Set point = segment.PointAt(-0.1)
+Assert:
+    Assert.Fail "Expected error was not raised"
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then Resume TestExit Else Resume Assert
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestBisector()
+    On Error GoTo TestFail
+    
+    Dim bisector As Line2D
+    Set bisector = segment.bisector
+    ' Bisector base should be the midpoint
+    Assert.IsTrue bisector.Base.Equals(segment.PointAtMid)
+    ' Bisector direction should be perpendicular to segment direction
+    Assert.IsTrue bisector.Direction.IsPerpendicularTo(segment.DirectionVector)
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub

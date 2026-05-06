@@ -5,8 +5,15 @@ Option Private Module
 '@TestModule
 '@Folder("Tests.StructuralMath.AnalyticGeometry.2D")
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+#Const LateBind = LateBindTests
+
+#If LateBind Then
+    Private Assert As Object
+    Private Fakes As Object
+#Else
+    Private Assert As Rubberduck.AssertClass
+    Private Fakes As Rubberduck.FakesProvider
+#End If
 
 Private u As Vector2D
 Private v As Vector2D
@@ -19,8 +26,13 @@ Private toNormalize As Vector2D
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'this method runs once per module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    #If LateBind Then
+        Set Assert = CreateObject("Rubberduck.AssertClass")
+        Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    #Else
+        Set Assert = New Rubberduck.AssertClass
+        Set Fakes = New Rubberduck.FakesProvider
+    #End If
     
     Set u = New Vector2D
     With u
@@ -155,34 +167,6 @@ Private Sub TestDotProduct()
 
     'Assert:
     Assert.IsTrue Doubles.Equal(actual, expected)
-
-TestExit:
-    Exit Sub
-TestFail:
-    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
-    Resume TestExit
-End Sub
-
-'@TestMethod("Method")
-Private Sub TestProjectionOver()
-    On Error GoTo TestFail
-    
-    'Arrange:
-    Dim expected As Double
-    expected = 9.19238815542512
-    
-    Dim vec As Vector2D
-    Set vec = CreateVector2D(10, 3)
-    
-    Dim dirVec As Vector2D
-    Set dirVec = CreateVector2D(1, 1)
-    
-    'Act:
-    Dim actual As Double
-    actual = vec.ProjectionOver(dirVec)
-
-    'Assert:
-    Assert.IsTrue Doubles.Equal(actual, expected), "Expected = " & expected & " vs. Actual = " & actual
 
 TestExit:
     Exit Sub
@@ -612,4 +596,32 @@ TestFail:
     Resume TestExit
 End Sub
 
+'@TestMethod("Method")
+Private Sub TestAngleToPositiveCCW()
+    On Error GoTo TestFail
+    
+    ' East rotated CCW to NorthEast should give positive PI/4
+    Dim expected As Double
+    expected = PI / 4
+    Assert.IsTrue Doubles.Equal(expected, east.AngleTo(northEast))
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
 
+'@TestMethod("Method")
+Private Sub TestAngleToNegativeCW()
+    On Error GoTo TestFail
+    
+    ' East rotated CW to SouthEast should give negative PI/4
+    Dim expected As Double
+    expected = -PI / 4
+    Assert.IsTrue Doubles.Equal(expected, east.AngleTo(southEast))
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub

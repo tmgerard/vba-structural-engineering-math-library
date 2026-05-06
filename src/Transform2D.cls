@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '@Folder("StructuralMath.AnalyticGeometry.2D")
 Option Explicit
 
-Const MatrixSize As Long = 3
+Private Const MatrixSize As Long = 3
 
 Private Type TTransform2D
     transform As Matrix
@@ -76,6 +76,7 @@ Public Function ApplyTo(ByVal pt As Point2D) As Point2D
     ' convert to homogeneous coordinates to allow translation
     Dim pointH As Vector
     Set pointH = CreateVector(MatrixSize)
+    pointH.Orientation = ColumnVector
     With pointH
         .ValueAt(0) = pt.x
         .ValueAt(1) = pt.y

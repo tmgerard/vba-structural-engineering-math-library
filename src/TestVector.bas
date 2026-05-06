@@ -140,3 +140,93 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+'@TestMethod("Method")
+Private Sub TestEqualsTrue()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim vecData(2) As Double
+    vecData(0) = 1
+    vecData(1) = 2
+    vecData(2) = 3
+    
+    Dim vec1 As Vector
+    Set vec1 = New Vector
+    Set vec1 = vec1.SetLength(3).SetData(vecData)
+    
+    Dim vec2 As Vector
+    Set vec2 = New Vector
+    Set vec2 = vec2.SetLength(3).SetData(vecData)
+
+    'Act:
+
+    'Assert:
+    Assert.IsTrue vec1.Equals(vec2)
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestEqualsFalseLengthMismatch()
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim vecData(2) As Double
+    vecData(0) = 1
+    vecData(1) = 2
+    vecData(2) = 3
+    
+    Dim vec1 As Vector
+    Set vec1 = New Vector
+    Set vec1 = vec1.SetLength(3).SetData(vecData)
+    
+    Dim vec2 As Vector
+    Set vec2 = New Vector
+    Set vec2 = vec2.SetLength(4)
+
+    'Act:
+
+    'Assert:
+    Assert.IsFalse vec1.Equals(vec2)
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Expected Error")
+Private Sub TestSetDataBad()
+    Const ExpectedError As Long = VectorErrors.LengthMismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim vecData(3) As Double
+    vecData(0) = 1
+    vecData(1) = 2
+    vecData(2) = 3
+    vecData(3) = 4
+    
+    'Act:
+    Dim vec As Vector
+    Set vec = New Vector
+    Set vec = vec.SetLength(3).SetData(vecData)
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub

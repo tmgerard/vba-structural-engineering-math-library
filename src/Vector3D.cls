@@ -98,8 +98,8 @@ Public Function Dot(ByVal other As Vector3D) As Double
     Dot = (this.u * other.u) + (this.v * other.v) + (this.w * other.w)
 End Function
 
-Public Function ProjectionOver(ByVal direction As Vector3D) As Double
-    ProjectionOver = Me.Dot(direction.Normalized)
+Public Function ProjectionOver(ByVal Direction As Vector3D) As Double
+    ProjectionOver = Me.Dot(Direction.Normalized)
 End Function
 
 Public Function Cross(ByVal other As Vector3D) As Vector3D
@@ -124,28 +124,27 @@ Public Function AngleValueTo(ByVal other As Vector3D) As Double
     AngleValueTo = Math2.Acos(dotProduct / normProduct)
 End Function
 
-
+' TODO: Fix 3D vector angle function
 'Public Function AngleTo(ByVal other As Vector3D) As Double
 '    Dim value As Double
 '    value = Me.AngleValueTo(other)
 '
-'    Dim crossProduct As Vector3D
-'    Set crossProduct = Me.Cross(other)
+'    Dim crossProduct As Double
+'    crossProduct = Me.Cross(other)
 '
-'    ' NOTE: need to check if there are other ways to do this. Will likely not function if rotating along x-z or y-x planes
-'    AngleTo = Math.Sgn(crossProduct.w) * value
+'    AngleTo = Math.Sgn(crossProduct) * value
 'End Function
 
-Public Function Equals(ByVal other As Vector3D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
+Public Function Equals(ByVal other As Vector3D) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
     ElseIf Not TypeOf other Is Vector3D Then ' other is not a Vector3D
         Equals = False
     Else    ' check that u, v, and w values are the same
-        Equals = Doubles.Equal(this.u, other.u, tolerance) And _
-                 Doubles.Equal(this.v, other.v, tolerance) And _
-                 Doubles.Equal(this.w, other.w, tolerance)
+        Equals = Doubles.Equal(this.u, other.u) And _
+                 Doubles.Equal(this.v, other.v) And _
+                 Doubles.Equal(this.w, other.w)
     End If
 
 End Function

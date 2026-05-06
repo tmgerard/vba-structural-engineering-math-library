@@ -14,7 +14,7 @@ Public Enum Polygon2DErrors
     TooFewPoints = vbObjectError + 1000
 End Enum
 
-Private Const MinVertices As Integer = 3
+Private Const MinVertices As Long = 3
 
 Private Type TPolygon2D
     Points As Collection
@@ -35,7 +35,8 @@ Public Property Get Points() As Collection
 End Property
 
 Public Property Set Points(ByRef point2DCollection As Collection)
-
+    Set this.Points = New Collection ' clear existing points
+    
     Dim point As Variant
     For Each point In point2DCollection
         If TypeOf point Is Point2D Then
@@ -111,7 +112,10 @@ Attribute Centroid.VB_Description = "Returns a Point2D object representing the c
             (currentPoint.x * nextPoint.y - nextPoint.x * currentPoint.y)
     End If
     
-    Set Centroid = CreatePoint2D(sumX / (6 * SignedArea), sumY / (6 * SignedArea))
+    Dim sgndArea As Double
+    sgndArea = SignedArea
+    
+    Set Centroid = CreatePoint2D(sumX / (6 * sgndArea), sumY / (6 * sgndArea))
     
 End Function
 

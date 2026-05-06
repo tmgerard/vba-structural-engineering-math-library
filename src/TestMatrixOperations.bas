@@ -89,8 +89,6 @@ Private Sub TestMatMult()
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
-    On Error Resume Next
-    
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
@@ -175,9 +173,51 @@ Private Sub TestTransposeMatrixObject()
     Assert.IsTrue expected.Equals(actual)
 
 TestExit:
-    '@Ignore UnhandledOnErrorResumeNext
-    On Error Resume Next
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Function")
+Private Sub TestTransposeVectorObject()
+    On Error GoTo TestFail
     
+    'Arrange:
+    Dim B As Vector
+    Set B = CreateVector(3)
+    With B
+        .Orientation = ColumnVector
+        .ValueAt(0) = 1
+        .ValueAt(1) = 2
+        .ValueAt(2) = 0
+    End With
+    
+    Dim expected As Vector
+    Set expected = CreateVector(3)
+    With expected
+        .Orientation = RowVector
+        .ValueAt(0) = 1
+        .ValueAt(1) = 2
+        .ValueAt(2) = 0
+    End With
+    
+    'Act:
+    Dim actual As IMatrix
+    Set actual = Transpose(B)
+    
+    'Assert:
+    If TypeOf actual Is Vector Then
+        Dim vActual As Vector
+        Set vActual = actual ' cast to Vector object
+        Assert.IsTrue expected.Equals(actual)
+        Assert.IsTrue vActual.Orientation = RowVector
+    Else
+        Assert.Fail "Result is not a Vector object"
+    End If
+    
+
+TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description

@@ -55,16 +55,16 @@ Attribute Length.VB_Description = "Returns the length of the segment"
 End Property
 
 '@Description "Returns Line2D object perpendicular to segment through the point at the middle of the segment."
-Public Function Bisector() As Line2D
-Attribute Bisector.VB_Description = "Returns Line2D object perpendicular to segment through the point at the middle of the segment."
+Public Function bisector() As Line2D
+Attribute bisector.VB_Description = "Returns Line2D object perpendicular to segment through the point at the middle of the segment."
     Dim newLine As Line2D
     Set newLine = New Line2D
     With newLine
         Set .Base = Me.PointAtMid
-        Set .direction = Me.DirectionVector.Perpendicular.Normalized
+        Set .Direction = Me.DirectionVector.Perpendicular.Normalized
     End With
     
-    Set Bisector = newLine
+    Set bisector = newLine
 End Function
 
 '@Description "Returns Point2D object corresponding to the closest point on the line segment to the given Point2D"
@@ -144,9 +144,9 @@ Public Function PointAt(ByVal lengthRatio As Double) As Point2D
         newPoint.y = this.StartPoint.y
     Case Is >= MaxRatio
         newPoint.x = this.EndPoint.x
-        newPoint.y = this.StartPoint.y
+        newPoint.y = this.EndPoint.y
     Case Else
-        Set newPoint = this.StartPoint.Displaced(Me.DirectionVector, lengthRatio)
+        Set newPoint = this.StartPoint.Displaced(Me.DirectionVector.Normalized, lengthRatio * Me.Length)
     End Select
     
     Set PointAt = newPoint
@@ -178,14 +178,14 @@ Private Function IsValid(ByRef ratio As Double) As Boolean
     IsValid = Not ratio < MinRatio And Not ratio > MaxRatio
 End Function
 
-Public Function Equals(ByVal other As Segment2D, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
+Public Function Equals(ByVal other As Segment2D) As Boolean
 
     If Me Is other Then
         Equals = True
     ElseIf Not TypeOf other Is Segment2D Then
         Equals = False
     Else
-        Equals = this.StartPoint.Equals(other.StartPoint, tolerance) And this.EndPoint.Equals(other.EndPoint, tolerance)
+        Equals = this.StartPoint.Equals(other.StartPoint) And this.EndPoint.Equals(other.EndPoint)
     End If
 
 End Function

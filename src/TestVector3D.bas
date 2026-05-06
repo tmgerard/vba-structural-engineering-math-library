@@ -6,8 +6,15 @@ Attribute VB_Name = "TestVector3D"
 Option Explicit
 Option Private Module
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+#Const LateBind = LateBindTests
+
+#If LateBind Then
+    Private Assert As Object
+    Private Fakes As Object
+#Else
+    Private Assert As Rubberduck.AssertClass
+    Private Fakes As Rubberduck.FakesProvider
+#End If
 
 Private vecA As Vector3D
 Private vecB As Vector3D
@@ -15,8 +22,13 @@ Private vecB As Vector3D
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'this method runs once per module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    #If LateBind Then
+        Set Assert = CreateObject("Rubberduck.AssertClass")
+        Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    #Else
+        Set Assert = New Rubberduck.AssertClass
+        Set Fakes = New Rubberduck.FakesProvider
+    #End If
     
     Set vecA = New Vector3D
     With vecA
@@ -174,7 +186,7 @@ Private Sub TestNorm()
     
     'Arrange:
     Dim expected As Double
-    expected = 4.35889894354067
+    expected = Math.Sqr(19)
     
     'Act:
     Dim actual As Double
@@ -226,106 +238,24 @@ End Sub
 '@TestMethod("Method")
 Private Sub TestAngleValueTo()
     On Error GoTo TestFail
-
+    
     'Arrange:
     Dim expected As Double
     expected = 1.872 ' radians
-
+    
     'Act:
     Dim actual As Double
     actual = vecA.AngleValueTo(vecB)
-
+    
     'Assert:
     Assert.IsTrue Doubles.Equal(expected, actual, 0.001), "Expected: " & expected & " Actual: " & actual
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
     On Error Resume Next
-
+    
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
-
-''@TestMethod("Method")
-'Private Sub TestAngleToPositive()
-'    On Error GoTo TestFail
-'
-'    'Arrange:
-'    Dim expected As Double
-'    expected = Math2.PI / 2 ' radians
-'
-'    Dim vecX As Vector3D
-'    Set vecX = New Vector3D
-'    With vecX
-'        .u = 1
-'        .v = 0
-'        .w = 0
-'    End With
-'
-'    Dim vecY As Vector3D
-'    Set vecY = New Vector3D
-'    With vecY
-'        .u = 0
-'        .v = 1
-'        .w = 0
-'    End With
-'
-'    'Act:
-'    Dim actual As Double
-'    actual = vecX.AngleTo(vecY)
-'
-'    'Assert:
-'    Assert.IsTrue Doubles.Equal(expected, actual, 0.001), "Expected: " & expected & " Actual: " & actual
-'
-'TestExit:
-'    '@Ignore UnhandledOnErrorResumeNext
-'    On Error Resume Next
-'
-'    Exit Sub
-'TestFail:
-'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
-'    Resume TestExit
-'End Sub
-'
-''@TestMethod("Method")
-'Private Sub TestAngleToNegative()
-'    On Error GoTo TestFail
-'
-'    'Arrange:
-'    Dim expected As Double
-'    expected = -Math2.PI / 2  ' radians
-'
-'    Dim vecX As Vector3D
-'    Set vecX = New Vector3D
-'    With vecX
-'        .u = 1
-'        .v = 0
-'        .w = 0
-'    End With
-'
-'    Dim vecY As Vector3D
-'    Set vecY = New Vector3D
-'    With vecY
-'        .u = 0
-'        .v = -1
-'        .w = 0
-'    End With
-'
-'    'Act:
-'    Dim actual As Double
-'    actual = vecX.AngleTo(vecY)
-'
-'    'Assert:
-'    Assert.IsTrue Doubles.Equal(expected, actual, 0.001), "Expected: " & expected & " Actual: " & actual
-'
-'TestExit:
-'    '@Ignore UnhandledOnErrorResumeNext
-'    On Error Resume Next
-'
-'    Exit Sub
-'TestFail:
-'    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
-'    Resume TestExit
-'End Sub

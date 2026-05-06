@@ -55,25 +55,9 @@ Private Function SetRotationWithinRange(ByVal rtValue As Double) As Double
     Dim TwoPi As Double
     TwoPi = 2 * PI
     
-    Const IterationLimit As Long = 10000
-    Dim loopCount As Long
-    loopCount = 0
-    While Math.Abs(rtValue) > PI
-    
-        loopCount = loopCount + 1
-        If loopCount > IterationLimit Then ' infinte loop likely
-            Err.Raise vbObjectError + 2000, _
-                      "PolarPoint.SetRotationWithinRange", _
-                      "Inifinite loop detected when aliasing rotation value!"
-        End If
-        
-        rtValue = rtValue + PI
-        rtValue = rtValue - Int(rtValue / TwoPi) * TwoPi
-        rtValue = rtValue - this.rot - PI
-    Wend
-    
+    rtValue = rtValue - TwoPi * Int((rtValue + PI) / TwoPi)
+    If Doubles.Equal(rtValue, -PI) Then rtValue = PI
     SetRotationWithinRange = rtValue
-    
 End Function
 
 Public Function ToPoint2D() As Point2D
@@ -87,7 +71,7 @@ Public Function ToPoint2D() As Point2D
     Set ToPoint2D = newPoint
 End Function
 
-Public Function Equals(ByVal other As PointPolar, Optional ByVal tolerance As Double = CompareTolerance) As Boolean
+Public Function Equals(ByVal other As PointPolar) As Boolean
 
     If Me Is other Then ' reference to the exact same object
         Equals = True
@@ -95,11 +79,11 @@ Public Function Equals(ByVal other As PointPolar, Optional ByVal tolerance As Do
         Equals = False
     Else
         If Math.Abs(Me.Theta) = PI Then ' angle aliasing can return either pi or -pi which are equivalent rotations
-            Equals = Doubles.Equal(Me.Radius, other.Radius, tolerance) And _
-                     Doubles.Equal(Math.Abs(Me.Theta), Math.Abs(other.Theta), tolerance)
+            Equals = Doubles.Equal(Me.Radius, other.Radius) And _
+                     Doubles.Equal(Math.Abs(Me.Theta), Math.Abs(other.Theta))
         Else
-            Equals = Doubles.Equal(Me.Radius, other.Radius, tolerance) And _
-                     Doubles.Equal(Me.Theta, other.Theta, tolerance)
+            Equals = Doubles.Equal(Me.Radius, other.Radius) And _
+                     Doubles.Equal(Me.Theta, other.Theta)
         End If
     End If
 

@@ -7,8 +7,15 @@ Attribute VB_Name = "TestPoint3D"
 Option Explicit
 Option Private Module
 
-Private Assert As Rubberduck.AssertClass
-Private Fakes As Rubberduck.FakesProvider
+#Const LateBind = LateBindTests
+
+#If LateBind Then
+    Private Assert As Object
+    Private Fakes As Object
+#Else
+    Private Assert As Rubberduck.AssertClass
+    Private Fakes As Rubberduck.FakesProvider
+#End If
 
 Private point1 As Point3D
 Private point2 As Point3D
@@ -16,8 +23,13 @@ Private point2 As Point3D
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'this method runs once per module.
-    Set Assert = New Rubberduck.AssertClass
-    Set Fakes = New Rubberduck.FakesProvider
+    #If LateBind Then
+        Set Assert = CreateObject("Rubberduck.AssertClass")
+        Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    #Else
+        Set Assert = New Rubberduck.AssertClass
+        Set Fakes = New Rubberduck.FakesProvider
+    #End If
     
     Set point1 = New Point3D
     With point1
@@ -60,14 +72,14 @@ Private Sub TestDistanceTo()
     
     'Arrange:
     Dim expected As Double
-    expected = 3.46
+    expected = Math.Sqr(12)
 
     'Act:
     Dim actual As Double
     actual = point1.DistanceTo(point2)
 
     'Assert:
-    Assert.IsTrue Doubles.Equal(expected, actual, 0.01)
+    Assert.IsTrue Doubles.Equal(expected, actual)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext

@@ -57,7 +57,7 @@ Private Sub ModuleInitialize()
     Set line1 = New Line2D
     With line1
         Set .Base = line1Base
-        Set .direction = line1Direction
+        Set .Direction = line1Direction
     End With
     
     Set line2Base = New Point2D
@@ -75,7 +75,7 @@ Private Sub ModuleInitialize()
     Set line2 = New Line2D
     With line2
         Set .Base = line2Base
-        Set .direction = line2Direction
+        Set .Direction = line2Direction
     End With
     
     Set line3Base = New Point2D
@@ -93,7 +93,7 @@ Private Sub ModuleInitialize()
     Set line3 = New Line2D
     With line3
         Set .Base = line3Base
-        Set .direction = line3Direction
+        Set .Direction = line3Direction
     End With
     
     Set line4Base = New Point2D
@@ -111,7 +111,7 @@ Private Sub ModuleInitialize()
     Set line4 = New Line2D
     With line4
         Set .Base = line4Base
-        Set .direction = line4Direction
+        Set .Direction = line4Direction
     End With
     
 End Sub
@@ -187,6 +187,41 @@ Private Sub TestLinesIntersection()
     'Assert:
     Assert.IsTrue actual.Equals(expected)
 
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestPerpendicularThrough()
+    On Error GoTo TestFail
+    ' Perpendicular to line3 (vertical) through (50,0)
+    ' should be a horizontal line through that point
+    Dim pnt As Point2D
+    Set pnt = CreatePoint2D(0, 0)
+    Dim perp As Line2D
+    Set perp = line3.PerpendicularThrough(pnt)
+    Assert.IsTrue perp.Direction.IsPerpendicularTo(line3.Direction)
+    Assert.IsTrue perp.Base.Equals(pnt)
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestParallelThrough()
+    On Error GoTo TestFail
+    
+    Dim pnt As Point2D
+    Set pnt = CreatePoint2D(0, 0)
+    Dim par As Line2D
+    Set par = line3.ParallelThrough(pnt)
+    Assert.IsTrue par.Direction.IsParallelTo(line3.Direction)
+    Assert.IsTrue par.Base.Equals(pnt)
 TestExit:
     Exit Sub
 TestFail:

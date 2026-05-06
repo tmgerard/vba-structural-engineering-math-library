@@ -3,11 +3,11 @@ Attribute VB_Name = "VectorOperations"
 Option Explicit
 
 Public Enum VectorOperationErrors
-    SizeMismatch = vbObjectError + 8000
+    SizeMismatch = vbObjectError + 3000
     OrientationMismatch
 End Enum
 
-Public Function VecAdd(ByRef vecA As Vector, ByRef vecB As Vector)
+Public Function VecAdd(ByRef vecA As Vector, ByRef vecB As Vector) As Vector
     If Not vecA.Length = vecB.Length Then
         Err.Raise Number:=VectorOperationErrors.SizeMismatch, _
                   Source:="VectorOperations.VecAdd", _
@@ -32,7 +32,7 @@ Public Function VecAdd(ByRef vecA As Vector, ByRef vecB As Vector)
     Set VecAdd = vctr
 End Function
 
-Public Function VecSubtract(ByRef vecA As Vector, ByRef vecB As Vector)
+Public Function VecSubtract(ByRef vecA As Vector, ByRef vecB As Vector) As Vector
     If Not vecA.Length = vecB.Length Then
         Err.Raise Number:=VectorOperationErrors.SizeMismatch, _
                   Source:="VectorOperations.VecSubtract", _

@@ -28,6 +28,23 @@ Private Sub ModuleInitialize()
     #End If
 End Sub
 
+'@ModuleCleanup
+Private Sub ModuleCleanup()
+    'this method runs once per module.
+    Set Assert = Nothing
+    Set Fakes = Nothing
+End Sub
+
+'@TestInitialize
+Private Sub TestInitialize()
+    'This method runs before every test in the module..
+End Sub
+
+'@TestCleanup
+Private Sub TestCleanup()
+    'this method runs after every test in the module.
+End Sub
+
 '@TestMethod("Method")
 Private Sub TestIsSquare()
     On Error GoTo TestFail
@@ -265,19 +282,101 @@ Private Sub AssertMatrixHasData(ByRef mat As Matrix, ByRef matData() As Double)
     Next rowIndex
     
 End Sub
-'@ModuleCleanup
-Private Sub ModuleCleanup()
-    'this method runs once per module.
-    Set Assert = Nothing
-    Set Fakes = Nothing
+
+'@TestMethod("Expected Error")
+Private Sub TestSetNegativeColumnSize()
+    Const ExpectedError As Long = MatrixErrors.BadColumns
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim mat As Matrix
+    Set mat = New Matrix
+    mat.SetSize 2, -1
+    
+    'Act:
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
 End Sub
 
-'@TestInitialize
-Private Sub TestInitialize()
-    'This method runs before every test in the module..
+'@TestMethod("Expected Error")
+Private Sub TestSetNegativeRowSize()
+    Const ExpectedError As Long = MatrixErrors.BadRows
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim mat As Matrix
+    Set mat = New Matrix
+    mat.SetSize -2, 1
+    
+    'Act:
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
 End Sub
 
-'@TestCleanup
-Private Sub TestCleanup()
-    'this method runs after every test in the module.
+'@TestMethod("Expected Error")
+Private Sub TestSetDataWrongSize()
+    Const ExpectedError As Long = MatrixErrors.MatrixSizeMismatch
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim matData(3) As Double
+    matData(0) = 1
+    matData(1) = 2
+    matData(2) = 3
+    matData(3) = 4
+    
+    'Act:
+    Dim mat As Matrix
+    Set mat = New Matrix
+    Set mat = mat.SetSize(6, 6).SetData(matData)
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestEqualsReturnsFalseForDifferentSize()
+    On Error GoTo TestFail
+    
+    Dim mat2x2 As Matrix
+    Set mat2x2 = New Matrix
+    mat2x2.SetSize 2, 2
+    Dim mat2x3 As Matrix
+    Set mat2x3 = New Matrix
+    mat2x3.SetSize 2, 3
+    Assert.IsFalse mat2x2.Equals(mat2x3)
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
 End Sub

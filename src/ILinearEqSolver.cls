@@ -10,5 +10,5 @@ Attribute VB_Exposed = False
 '@Folder("StructuralMath.LinearAlgebra.LinearEqSolver")
 Option Explicit
 
-Public Function Solve(ByRef mat As Matrix, ByRef vec As Vector) As Vector
+Public Function Solve(ByRef mat As IMatrix, ByRef vec As IMatrix) As Vector
 End Function

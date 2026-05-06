@@ -5,9 +5,6 @@ Option Explicit
 ' Define PI to remove worksheet function dependency if used outside of Excel
 Public Const PI As Double = 3.14159265358979
 
-' Constant defining default tolerance for floating point value comparisons
-Public Const CompareTolerance As Double = 0.00001
-
 Public Function Degrees(ByVal rad As Double) As Double
     Degrees = rad * (180# / PI)
 End Function
@@ -47,12 +44,4 @@ Public Function Atan2(ByVal yValue As Double, ByVal xValue As Double) As Double
     Else
         Atan2 = Math.Atn(yValue / xValue) - PI
     End If
-End Function
-
-'@Description "Linear interpolation between two values at a given ratio."
-Public Function Lerp(ByVal startVal As Double, ByVal endVal As Double, ByVal ratio As Double) As Double
-Attribute Lerp.VB_Description = "Linear interpolation between two values at a given ratio."
-    If ratio < 0 Then ratio = 0
-    If ratio > 1 Then ratio = 1
-    Lerp = startVal + ratio * (endVal - startVal)
 End Function

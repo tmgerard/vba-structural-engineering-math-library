@@ -86,13 +86,60 @@ End Sub
 Private Sub TestAreaPointsCloseShape()
     On Error GoTo TestFail
     
+    Dim clsdPlygn As Polygon2D
+    Set clsdPlygn = New Polygon2D
+    With clsdPlygn
+        .Add CreatePoint2D(1, 6)
+        .Add CreatePoint2D(3, 1)
+        .Add CreatePoint2D(7, 2)
+        .Add CreatePoint2D(4, 4)
+        .Add CreatePoint2D(8, 5)
+        .Add CreatePoint2D(1, 6)
+    End With
+    
     'Arrange:
     Const expected As Double = 16.5
-    plygn.Add CreatePoint2D(1, 6)
     
     'Act:
     Dim actual As Double
-    actual = plygn.Area
+    actual = clsdPlygn.Area
+    
+    'Assert:
+    Assert.AreEqual expected, actual, "Expected = " & expected & " vs. Actual = " & actual
+
+TestExit:
+    '@Ignore UnhandledOnErrorResumeNext
+    On Error Resume Next
+    
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
+Private Sub TestAreaPointsCloseShapeCCW()
+    On Error GoTo TestFail
+    
+    Dim clsdPlygn As Polygon2D
+    Set clsdPlygn = New Polygon2D
+    With clsdPlygn
+        ' add points in reverse, will result in negative area if
+        ' area method not handled correctly
+        .Add CreatePoint2D(1, 6)
+        .Add CreatePoint2D(8, 5)
+        .Add CreatePoint2D(4, 4)
+        .Add CreatePoint2D(7, 2)
+        .Add CreatePoint2D(3, 1)
+        .Add CreatePoint2D(1, 6)
+    End With
+    
+    'Arrange:
+    Const expected As Double = 16.5
+    
+    'Act:
+    Dim actual As Double
+    actual = clsdPlygn.Area
     
     'Assert:
     Assert.AreEqual expected, actual, "Expected = " & expected & " vs. Actual = " & actual
@@ -182,6 +229,27 @@ TestFail:
 End Sub
 
 '@TestMethod("Method")
+Private Sub TestContainsPointOnVertex()
+    On Error GoTo TestFail
+    
+    'Arrange
+    Dim pnt As Point2D
+    Set pnt = CreatePoint2D(1, 6)
+    
+    'Assert:
+    Assert.IsTrue plygn.ContainsPoint(pnt)
+    
+TestExit:
+    '@Ignore UnhandledOnErrorResumeNext
+    On Error Resume Next
+    
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+    Resume TestExit
+End Sub
+
+'@TestMethod("Method")
 Private Sub TestContainsPointClosedShape()
     On Error GoTo TestFail
     
@@ -245,3 +313,33 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
     Resume TestExit
 End Sub
+
+'@TestMethod("Expected Error")
+Private Sub TestAreaTooFewPoints()
+    Const ExpectedError As Long = Polygon2DErrors.TooFewPoints
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim clsdPlygn As Polygon2D
+    Set clsdPlygn = New Polygon2D
+    With clsdPlygn
+        .Add CreatePoint2D(1, 6)
+        .Add CreatePoint2D(3, 1)
+    End With
+    
+    'Act:
+    clsdPlygn.Area
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
